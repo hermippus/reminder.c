@@ -1,0 +1,10 @@
+[Unit]
+Description=Reminder Daemon
+
+[Service]
+Type=simple
+ExecStart=/usr/local/bin/reminderd
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
