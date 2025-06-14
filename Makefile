@@ -6,10 +6,10 @@ DAEMON		= /etc/systemd/system/
 all: clean reminderd reminder
 
 reminder:
-	$(CC) $(CFLAGS) -o reminder cli/main.c
+	$(CC) $(CFLAGS) -o reminder src/cli/main.c
 
 reminderd:
-	$(CC) $(CFLAGS) -o reminderd daemon/main.c
+	$(CC) $(CFLAGS) -o reminderd src/daemon/main.c
 
 install: all
 	cp reminderd reminder $(INSTALL)
