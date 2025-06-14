@@ -1,6 +1,5 @@
 CC				= clang
 CFLAGS		= -std=c99 -Wall -Wextra 
-PKGFLAGS	= `pkg-config --cflags --libs libnotify`
 INSTALL		= /usr/local/bin/
 DAEMON		= /etc/systemd/system/
 
@@ -10,7 +9,7 @@ reminder:
 	$(CC) $(CFLAGS) -o reminder cli/main.c
 
 reminderd:
-	$(CC) $(CFLAGS) -o reminderd daemon/main.c $(PKGFLAGS)
+	$(CC) $(CFLAGS) -o reminderd daemon/main.c
 
 install: all
 	cp reminderd reminder $(INSTALL)
