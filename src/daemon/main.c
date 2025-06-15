@@ -1,16 +1,17 @@
 #define _POSIX_C_SOURCE 200809L
+
 #include <stdlib.h>
+#include <stdio.h>
 #include <signal.h>
+#include <string.h>
+#include <syslog.h>
 #include <sys/syslog.h>
 #include <sys/socket.h>
 #include <sys/un.h>
 #include <sys/types.h>
-#include <unistd.h>
-#include <syslog.h>
 #include <sys/stat.h>
-#include <stdio.h>
-#include <string.h>
- 
+#include <unistd.h>
+
 #include "../headers/reminder.h"
 
 volatile sig_atomic_t keep_running = 1;
@@ -30,8 +31,9 @@ int main(void)
 
   int       serverfd, clientfd;
   
-  char      buf[BUFFER_SIZE];
+  char      buffer[BUFFER_SIZE];
   socklen_t addrlen = sizeof(struct sockaddr_un);
+  ssize_t   r;
 
   /* Server socket */
   umask(0111);
@@ -40,7 +42,7 @@ int main(void)
     return EXIT_FAILURE;
   }
 
-  /* Unlink old sockets if exists */
+  /* Unlink old socket if exists */
   unlink(SOCKET_PATH);
   
   /* Address */
@@ -78,28 +80,36 @@ int main(void)
     return EXIT_FAILURE;
   }
 
-  syslog(LOG_INFO, "Daemon started!");
+  syslog(LOG_INFO, "Daemon started :)");
 
+  /* Running daemon */
   while (keep_running) {
       clientfd = accept(serverfd, NULL, NULL);
       if (clientfd == -1) {
         perror("accept");
         continue;
       } 
-
-      /* Read data from client */
-      int data = read(clientfd, buf, BUFFER_SIZE - 1);
-      if (data > 0) {
-        buf[data] = '\0';
-        printf("Recieved: %s\n", buf);
+      /* Read data from the client */
+      // TO-DO: accept string and time
+      r = read(clientfd, buffer, BUFFER_SIZE - 1);
+      if (r > 0) {
+        buffer[r] = '\0';
+        syslog(LOG_INFO, "Client: %s\n", buffer);
+        
+        const char *reply = "Hello from server :)";
+        if (write(clientfd, reply, strlen(reply)) == -1) {
+          perror("write");
+          continue;
+        }
       }
 
       close(clientfd);
   }
 
-  syslog(LOG_INFO, "Daemon finished! Goodbye..");
+  syslog(LOG_INFO, "Daemon shutting down");
   close(serverfd);
   unlink(SOCKET_PATH);
   closelog();
-  return 0;
+
+  return EXIT_SUCCESS;
 }
