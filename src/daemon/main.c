@@ -4,11 +4,9 @@
 #include <stdio.h>
 #include <signal.h>
 #include <string.h>
-#include <syslog.h>
 #include <sys/syslog.h>
 #include <sys/socket.h>
 #include <sys/un.h>
-#include <sys/types.h>
 #include <sys/stat.h>
 #include <unistd.h>
 
@@ -94,13 +92,6 @@ int main(void)
       r = read(clientfd, buffer, BUFFER_SIZE - 1);
       if (r > 0) {
         buffer[r] = '\0';
-        syslog(LOG_INFO, "Client: %s\n", buffer);
-        
-        const char *reply = "Hello from server :)";
-        if (write(clientfd, reply, strlen(reply)) == -1) {
-          perror("write");
-          continue;
-        }
       }
 
       close(clientfd);
