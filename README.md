@@ -2,7 +2,8 @@
 Simple reminder written in C.
 
 Also use unix sockets, systemd, and GTK.
-It's only "pet project".
+
+It's just "pet project".
 
 ```bash
 # Install the reminder (requires root)
