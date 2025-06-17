@@ -1,7 +1,7 @@
 # reminder.c
 Simple reminder written in C.
 
-Also use unix sockets, systemd, and GTK.
+Also use unix sockets, systemd, epoll.
 
 It's just "pet project".
 

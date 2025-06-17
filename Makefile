@@ -1,4 +1,4 @@
-CC		= clang
+CC		= cc
 CFLAGS		= -std=c99 -Wall -Wextra 
 INSTALL		= /usr/local/bin/
 DAEMON		= /etc/systemd/system/

@@ -55,7 +55,6 @@ int main(void)
   addr.sun_family      = AF_UNIX;
   strncpy(addr.sun_path, SOCKET_PATH, sizeof(addr.sun_path) - 1);
 
-
   /* Bind the server socket */
   if (bind(serverfd, (struct sockaddr *)&addr, addrlen) == -1) {
     perror("bind");
@@ -85,13 +84,14 @@ int main(void)
   openlog("reminderd", LOG_PID, LOG_DAEMON);
   syslog(LOG_INFO, "Daemon started :)");
 
-  /* Epoll */
+  /* Epoll: socket, timer*/
   int epfd = epoll_create1(0);
   if (epfd == -1) {
-    perror("epoll_create1");
+    perror("epoll_create");
     return EXIT_FAILURE;
   }
 
+  /* Epoll for socket*/
   struct epoll_event ev, events[MAX_EVENTS];
   ev.events = EPOLLIN;
   ev.data.fd = serverfd;
@@ -106,6 +106,7 @@ int main(void)
     return EXIT_FAILURE;
   }
 
+  /* struct for timer */
   struct itimerspec timer;
   timer.it_interval.tv_sec  = 1;
   timer.it_interval.tv_nsec = 0;
@@ -117,6 +118,7 @@ int main(void)
     return EXIT_FAILURE;
   }
 
+  /* Epoll for timerfd */
   ev.events   = EPOLLIN;
   ev.data.fd  = tfd;
   if (epoll_ctl(epfd, EPOLL_CTL_ADD, tfd, &ev) == -1) {
@@ -124,7 +126,7 @@ int main(void)
     return EXIT_FAILURE;
   }
 
-  /* Running daemong and accept data */
+  /* Running daemon and accept data & time with epoll */
   while (keep_running) {
     int n = epoll_wait(epfd, events, MAX_EVENTS, -1);
     if (n == -1) {
@@ -179,7 +181,6 @@ int main(void)
   close(serverfd);
   unlink(SOCKET_PATH);
   closelog();
-
+  
   return EXIT_SUCCESS;
 }
-
