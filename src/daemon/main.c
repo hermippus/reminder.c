@@ -100,13 +100,13 @@ int main(void)
     return EXIT_FAILURE;
   }
 
+  /* struct for timer */
   int tfd = timerfd_create(CLOCK_MONOTONIC, 0);
   if (tfd == -1) {
     perror("timerfd_create");
     return EXIT_FAILURE;
   }
 
-  /* struct for timer */
   struct itimerspec timer;
   timer.it_interval.tv_sec  = 1;
   timer.it_interval.tv_nsec = 0;
