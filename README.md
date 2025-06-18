@@ -8,7 +8,7 @@ Dependencies:
 - Systemd
 - Zenity
 
-And also uses: unix sockets, signals, epoll.
+And also uses: unix sockets, signals, timerfd, epoll,
 
 ```bash
 # Install the reminder (requires root)
