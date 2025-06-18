@@ -1,10 +1,13 @@
 [Unit]
 Description=Reminder Daemon
+After=graphical.target
 
 [Service]
 Type=simple
 ExecStart=/usr/local/bin/reminderd
 Restart=on-failure
+Environment=DISPLAY=:0
+Environment=XAUTHORITY=%h/.Xauthority
 
 [Install]
-WantedBy=multi-user.target
+WantedBy=default.target

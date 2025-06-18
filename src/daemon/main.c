@@ -169,6 +169,14 @@ int main(void)
         for (int j = 0; j < reminder_count; ++j) {
           if (reminders[j].time <= now && reminders[j].time != 0) {
             syslog(LOG_INFO, "Reminder: %s", reminders[j].message);
+            /* 
+             * Use zenity for GUI
+             * TODO: Maybe GTK? 
+             */
+            char cmd[BUFFER_SIZE + 127];
+            snprintf(cmd, sizeof(cmd), "zenity --window-icon=dialog-information --notification --text '%s'", reminders[j].message);
+            system(cmd);
+
             reminders[j].time = 0;
           }
         }

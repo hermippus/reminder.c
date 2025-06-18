@@ -1,7 +1,7 @@
 CC		= cc
 CFLAGS		= -std=c99 -Wall -Wextra 
 INSTALL		= /usr/local/bin/
-DAEMON		= /etc/systemd/system/
+DAEMON		= /etc/systemd/user/
 
 all: clean reminderd reminder
 

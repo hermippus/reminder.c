@@ -45,6 +45,7 @@ int main(int argc, char **argv)
   /* Arguments */
   if (argc < 3) {
     usage();
+    return EXIT_FAILURE;
   }
 
   const char *msg   = argv[1];
