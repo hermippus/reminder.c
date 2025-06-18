@@ -1,6 +1,8 @@
 # reminder.c
 Simple reminder written in C.
 
+It's just a pet project.
+
 Dependencies:
 - Some GNU/Linux distro
 - Systemd
@@ -12,4 +14,7 @@ $ make install
 
 # Start the reminder service (requires systemd)
 $ systemctl --user start reminder
+
+# Usage
+$ reminder "Math" 13:00
 ```
