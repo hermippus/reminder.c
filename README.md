@@ -1,5 +1,5 @@
 # reminder.c
-Simple reminder written in C.
+A simple reminder written in C.
 
 It's just a pet project.
 
